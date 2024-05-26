@@ -10,7 +10,6 @@ import lombok.*;
 @AllArgsConstructor
 public class RegisterCategory {
 
-    private Long categoryNo;
     private Long parentCategory;
     private Long childCategory;
     private int depth;

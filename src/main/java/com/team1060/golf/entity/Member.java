@@ -29,6 +29,7 @@ public class Member {
     private String phone_number; // 휴대폰 번호
     @Enumerated(EnumType.STRING)
     private AuthType type;
+    @Enumerated(EnumType.STRING)
     private AuthDate authDate; // 카카오인증, 메일인증, 휴대폰 인증 등 인증 정보
     private boolean is_sms_consent; // true 1 , false 0
     private boolean is_email_consent; // true 1 , false 0

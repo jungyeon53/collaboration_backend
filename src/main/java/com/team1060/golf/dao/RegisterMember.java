@@ -20,11 +20,8 @@ public class RegisterMember {
     private String nickname; // 닉네임
     private String username; // 이름
     private String password; // 비밀번호
-    private ZonedDateTime regdate; // 가입일
     private String phone_number; // 휴대폰 번호
-    @Enumerated(EnumType.STRING)
     private AuthType type;
-    @Enumerated(EnumType.STRING)
     private AuthDate authDate; // 카카오인증, 메일인증, 휴대폰 인증 등 인증 정보
     private boolean is_sms_consent; // true 1 , false 0
     private boolean is_email_consent; // true 1 , false 0

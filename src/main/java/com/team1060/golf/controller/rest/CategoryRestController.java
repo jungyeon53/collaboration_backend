@@ -17,7 +17,7 @@ public class CategoryRestController {
     private final CategoryService categoryService;
 
     /**
-     * 게시글 등록
+     * 카테고리 등록
      * @param category
      * @return
      */

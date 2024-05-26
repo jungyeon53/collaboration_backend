@@ -14,19 +14,18 @@ import java.time.ZonedDateTime;
 @AllArgsConstructor
 public class RegisterBoard {
 
-    private Category category;
-    private Member member;
+    private Long categoryNo;
+    private Long memberNo;
     private String title;
     private String content;
-    private ZonedDateTime regdate;
 
 
-    public static Board registerBoard(RegisterBoard registerBoard){
+    public Board registerBoard(Category category, Member member){
         return Board.builder()
-                .category(registerBoard.getCategory())
-                .member(registerBoard.getMember())
-                .title(registerBoard.getTitle())
-                .content(registerBoard.getContent())
+                .category(category)
+                .member(member)
+                .title(this.title)
+                .content(this.content)
                 .regdate(ZonedDateTime.now())
                 .build();
     }

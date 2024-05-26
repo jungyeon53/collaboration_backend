@@ -20,7 +20,7 @@ public class Board {
     @ManyToOne
     @JoinColumn(name = "categoryNo")
     private Category category;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userNo")
     private Member member;
     private String content;
