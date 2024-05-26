@@ -1,0 +1,73 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.1.0'
+    id 'io.spring.dependency-management' version '1.1.4'
+    id 'war'
+}
+
+group = 'com.team1060'
+version = '0.0.1-SNAPSHOT'
+apply plugin: 'war'
+
+java {
+    sourceCompatibility = '17'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    // JPA
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation group: 'org.javassist', name: 'javassist', version: '3.15.0-GA'
+
+    // security
+//    implementation 'org.springframework.boot:spring-boot-starter-security'
+    // jwt
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // Map Struct
+    implementation 'org.mapstruct:mapstruct:1.5.3.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+
+    // 시큐리티
+//    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '3.2.0'
+    // Log4j
+    implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+
+
+    // FOR @ConfigurationProperties
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+    //swagger 설정
+    //http://localhost:8081/swagger-ui/index.html
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+// FOR @ConfigurationProperties
+tasks.named('compileJava') {
+    inputs.files(tasks.named('processResources'))
+}
