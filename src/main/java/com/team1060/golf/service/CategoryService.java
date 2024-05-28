@@ -5,6 +5,7 @@ import com.team1060.golf.dto.CategoryDto;
 import com.team1060.golf.entity.Category;
 import com.team1060.golf.mapMapper.CategoryMappper;
 import com.team1060.golf.repository.CategoryRepository;
+import com.team1060.golf.utils.EntityFetcher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +17,8 @@ import java.util.stream.Collectors;
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
-
     private final CategoryMappper categoryMappper;
+    private final EntityFetcher entityFetcher;
 
     /**
      * 카테고리 추가
@@ -40,8 +41,7 @@ public class CategoryService {
      * 카테고리 1개 조회
      */
     public CategoryDto viewCategory(Long categoryNo){
-        Category category = categoryRepository.findById(categoryNo)
-                .orElseThrow(() -> new RuntimeException("해당 카테고리를 찾을 수 없습니다."));
+        Category category = entityFetcher.getCategory(categoryNo);
         return categoryMappper.categoryToCategoryDTO(category);
     }
 
