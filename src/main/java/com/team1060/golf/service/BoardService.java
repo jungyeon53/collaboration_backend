@@ -10,6 +10,7 @@ import com.team1060.golf.repository.BoardAttachRepository;
 import com.team1060.golf.repository.BoardRepository;
 import com.team1060.golf.utils.EntityFetcher;
 import lombok.RequiredArgsConstructor;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,6 +38,8 @@ public class BoardService {
        Category category = entityFetcher.getCategory(board.getCategoryNo());
        Member member = entityFetcher.getMember(board.getMemberNo());
        Board registerBoard = boardRepository.save(board.registerBoard(category, member));
+
+       // 해시태그 (게시글의 키워드 추가예정 )
        boardRepository.save(registerBoard);
     }
 
@@ -79,4 +82,5 @@ public class BoardService {
         Files.write(filePath, file.getBytes());
         return filePath.toString();
     }
+
 }

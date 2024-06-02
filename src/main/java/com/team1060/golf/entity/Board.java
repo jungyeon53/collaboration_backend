@@ -1,5 +1,6 @@
 package com.team1060.golf.entity;
 
+import com.team1060.golf.enums.Keyword;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,6 +26,9 @@ public class Board {
     private Member member;
     private String content;
     private String title;
-
     private ZonedDateTime regdate;
+
+    // 게시글 해시태그
+    @Enumerated(EnumType.STRING)
+    private Keyword keyword;
 }

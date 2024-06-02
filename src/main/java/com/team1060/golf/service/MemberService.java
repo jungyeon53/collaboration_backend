@@ -8,6 +8,8 @@ import com.team1060.golf.exception.DuplicateNickNameException;
 import com.team1060.golf.mapMapper.MemberMapper;
 import com.team1060.golf.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,7 +17,9 @@ import org.springframework.stereotype.Service;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final MemberMapper memberMapper;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final PasswordEncoder passwordEncoder;
+
 
     /**
      * 회원가입
@@ -24,7 +28,7 @@ public class MemberService {
     public void registerMember(RegisterMember member){
         validateEmail(member.getEmail());
         validateNickName(member.getNickname());
-        memberRepository.save(RegisterMember.insertMember(member));
+        memberRepository.save(RegisterMember.insertMember(member, bCryptPasswordEncoder));
     }
 
     /**
@@ -55,7 +59,7 @@ public class MemberService {
      */
     public void loginMember(LoginMember loginMember) {
         Member member = memberRepository.findByEmail(loginMember.getEmail()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이메일입니다."));
-        boolean isPassword = member.getPassword().equals(loginMember.getPassword());
+        boolean isPassword = passwordEncoder.matches(loginMember.getPassword(),member.getPassword());
         if(!isPassword){
             throw new IllegalArgumentException("비밀번호가 틀립니다.");
         }

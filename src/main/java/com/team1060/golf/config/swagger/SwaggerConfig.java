@@ -1,4 +1,4 @@
-package com.team1060.golf.swagger;
+package com.team1060.golf.config.swagger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

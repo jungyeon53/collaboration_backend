@@ -6,6 +6,9 @@ import com.team1060.golf.entity.Member;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.ZonedDateTime;
 
@@ -21,15 +24,15 @@ public class RegisterMember {
     private String username; // 이름
     private String password; // 비밀번호
     private String phone_number; // 휴대폰 번호
-    private AuthType type;
-    private AuthDate authDate; // 카카오인증, 메일인증, 휴대폰 인증 등 인증 정보
+//    private AuthDate authDate; // 카카오인증, 메일인증, 휴대폰 인증 등 인증 정보
     private boolean is_sms_consent; // true 1 , false 0
     private boolean is_email_consent; // true 1 , false 0
 
-    public static Member insertMember(RegisterMember member){
+
+    public static Member insertMember(RegisterMember member, BCryptPasswordEncoder bCryptPasswordEncoder){
         return Member.builder()
                 .email(member.getEmail())
-                .password(member.getPassword())
+                .password(bCryptPasswordEncoder.encode(member.getPassword()))
                 .nickname(member.getNickname())
                 .username(member.getUsername())
                 .regdate(ZonedDateTime.now())

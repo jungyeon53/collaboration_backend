@@ -4,6 +4,7 @@ package com.team1060.golf.dao;
 import com.team1060.golf.entity.Member;
 import com.team1060.golf.entity.Board;
 import com.team1060.golf.entity.Category;
+import com.team1060.golf.enums.Keyword;
 import lombok.*;
 
 import java.time.ZonedDateTime;
@@ -18,7 +19,7 @@ public class RegisterBoard {
     private Long memberNo;
     private String title;
     private String content;
-
+    private Keyword keyword;
 
     public Board registerBoard(Category category, Member member){
         return Board.builder()
@@ -26,6 +27,7 @@ public class RegisterBoard {
                 .member(member)
                 .title(this.title)
                 .content(this.content)
+                .keyword(this.keyword)
                 .regdate(ZonedDateTime.now())
                 .build();
     }
