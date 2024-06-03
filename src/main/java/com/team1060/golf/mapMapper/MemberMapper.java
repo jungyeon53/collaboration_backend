@@ -1,6 +1,7 @@
 package com.team1060.golf.mapMapper;
 
 import com.team1060.golf.dto.MemberDto;
+import com.team1060.golf.dto.RefreshTokenDto;
 import com.team1060.golf.entity.Member;
 import org.mapstruct.Mapper;
 
@@ -8,4 +9,5 @@ import org.mapstruct.Mapper;
 public interface MemberMapper {
 
     MemberDto memberToMemberDTO(Member member);
+
 }

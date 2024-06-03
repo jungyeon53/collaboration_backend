@@ -3,16 +3,14 @@ package com.team1060.golf.entity;
 import com.team1060.golf.enums.AuthDate;
 import com.team1060.golf.enums.AuthType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.ZonedDateTime;
 
 @Entity
 @Builder
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tbl_member")
@@ -33,4 +31,5 @@ public class Member {
     private AuthDate authDate; // 카카오인증, 메일인증, 휴대폰 인증 등 인증 정보
     private boolean is_sms_consent; // true 1 , false 0
     private boolean is_email_consent; // true 1 , false 0
+    private String refreshToken;
 }

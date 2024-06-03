@@ -1,24 +1,33 @@
 package com.team1060.golf.service;
 
+import com.team1060.golf.config.jwt.TokenProvider;
 import com.team1060.golf.dao.LoginMember;
 import com.team1060.golf.dao.RegisterMember;
+import com.team1060.golf.dao.ReissuanceToken;
+import com.team1060.golf.dto.LoginDto;
 import com.team1060.golf.entity.Member;
 import com.team1060.golf.exception.DuplicateEmailException;
 import com.team1060.golf.exception.DuplicateNickNameException;
-import com.team1060.golf.mapMapper.MemberMapper;
 import com.team1060.golf.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class MemberService {
 
+    private static final int DEFAULT_ACCESS_EXPIRATION_MINUTES = 30;
+    private static final int DEFAULT_REFRESH_EXPIRATION_DAYS = 7;
+
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final PasswordEncoder passwordEncoder;
+    private final TokenProvider tokenProvider;
 
 
     /**
@@ -32,7 +41,7 @@ public class MemberService {
     }
 
     /**
-     * 이메일 중복검사
+     * 이메일 검사
      * @param Email
      */
     public void validateEmail(String Email){
@@ -57,11 +66,67 @@ public class MemberService {
      * 로그인
      * @param loginMember
      */
-    public void loginMember(LoginMember loginMember) {
+    public LoginDto loginMember(LoginMember loginMember) {
         Member member = memberRepository.findByEmail(loginMember.getEmail()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이메일입니다."));
-        boolean isPassword = passwordEncoder.matches(loginMember.getPassword(),member.getPassword());
-        if(!isPassword){
-            throw new IllegalArgumentException("비밀번호가 틀립니다.");
+        boolean isPassword = passwordEncoder.matches(loginMember.getPassword(), member.getPassword());
+        if (!isPassword) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
+        return makeRefreshToken(member);
+    }
+
+    /**
+     * 토큰 생성
+     * @param member
+     * @param
+     * @return
+     */
+    public LoginDto makeRefreshToken(Member member){
+        String accessToken = null;
+        String refreshToken = null;
+        // acessToken
+        Duration acessTime = Duration.ofMinutes(DEFAULT_ACCESS_EXPIRATION_MINUTES);
+        accessToken = tokenProvider.makeToken(member, acessTime);
+        // refreshToken
+        Duration refreshTime = Duration.ofDays(DEFAULT_REFRESH_EXPIRATION_DAYS);
+        refreshToken = tokenProvider.makeToken(member, refreshTime);
+        saveRefreshToken(member, refreshToken);
+        return new LoginDto(member.getEmail(), accessToken, refreshToken);
+    }
+
+    /**
+     * refreshToken 저장
+     * @param member
+     * @param refreshToken
+     * @return
+     */
+    public void saveRefreshToken(Member member ,String refreshToken){
+        member.setRefreshToken(refreshToken);
+        memberRepository.save(member);
+    }
+
+    /**
+     * refreshToken 재발급
+     * @param token
+     * @return
+     */
+    public LoginDto reissuanceToken(ReissuanceToken token){
+        Member member = memberRepository.findByEmail(token.getEmail()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이메일입니다."));
+        String preRefreshToken = member.getRefreshToken();
+        boolean isRefreshTokenEquals = preRefreshToken.equals(token.getRefreshToken());
+        if(!isRefreshTokenEquals){
+            throw new IllegalArgumentException("토큰이 일치하지 않습니다.");
+        }
+        return makeRefreshToken(member);
+    }
+
+    /**
+     * 로그아웃
+     * @param email
+     */
+    public void logout(String email) {
+        Member member = memberRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이메일입니다."));
+        member.setRefreshToken(null);
+        memberRepository.save(member);
     }
 }

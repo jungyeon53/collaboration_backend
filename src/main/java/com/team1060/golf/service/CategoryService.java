@@ -22,6 +22,7 @@ public class CategoryService {
 
     /**
      * 카테고리 추가
+     * @param category
      */
     public void registerCatogory(RegisterCategory category){
         categoryRepository.save(RegisterCategory.insertCategory(category));
@@ -29,6 +30,7 @@ public class CategoryService {
 
     /**
      * 모든 카테고리 조회
+     * @return
      */
     public List<CategoryDto> viewAllCategory(){
         List<Category> categories = categoryRepository.findAll();
@@ -39,6 +41,8 @@ public class CategoryService {
 
     /**
      * 카테고리 1개 조회
+     * @param categoryNo
+     * @return
      */
     public CategoryDto viewCategory(Long categoryNo){
         Category category = entityFetcher.getCategory(categoryNo);
@@ -47,6 +51,9 @@ public class CategoryService {
 
     /**
      * 2뎁스 카테고리 선택시 하위 카테고리 조회
+     * @param categoryNo
+     * @param depth
+     * @return
      */
     public List<CategoryDto> viewParentCategory(Long categoryNo , int depth){
         List<Category> categories = categoryRepository.findByParentCategoryAndDepth(categoryNo, depth);

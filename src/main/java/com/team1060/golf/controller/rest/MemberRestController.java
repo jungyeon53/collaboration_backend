@@ -2,6 +2,8 @@ package com.team1060.golf.controller.rest;
 
 import com.team1060.golf.dao.LoginMember;
 import com.team1060.golf.dao.RegisterMember;
+import com.team1060.golf.dao.ReissuanceToken;
+import com.team1060.golf.dto.LoginDto;
 import com.team1060.golf.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -31,8 +33,28 @@ public class MemberRestController {
      * @return
      */
     @PostMapping("login")
-    public ResponseEntity<String> loginMember(@RequestBody LoginMember member){
-        memberService.loginMember(member);
-        return ResponseEntity.ok("로그인 완료");
+    public ResponseEntity<LoginDto> loginMember(@RequestBody LoginMember member){
+        LoginDto response = memberService.loginMember(member);
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * refreshToken 재발급
+     * @param token
+     * @return
+     */
+    @PostMapping("refresh")
+    public ResponseEntity<LoginDto> reissuanceRefreshToken(@RequestBody ReissuanceToken token){
+        LoginDto response = memberService.reissuanceToken(token);
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * 로그아웃
+     * @param email
+     */
+    @PostMapping("logout")
+    public void logout(@RequestParam String email){
+        memberService.logout(email);
     }
 }

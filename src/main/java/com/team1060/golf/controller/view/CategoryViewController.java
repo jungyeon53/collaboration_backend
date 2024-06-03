@@ -28,6 +28,8 @@ public class CategoryViewController {
 
     /**
      * 카테고리 1개 조회
+     * @param categoryNo
+     * @return
      */
     @GetMapping("{categoryNo}")
     public CategoryDto viewCategory(@PathVariable(name = "categoryNo") Long categoryNo){
@@ -36,6 +38,8 @@ public class CategoryViewController {
 
     /**
      * 2뎁스 카테고리 선택시 하위 카테고리 조회
+     * @param categoryNo
+     * @return
      */
     @GetMapping("parentNo/{categoryNo}")
     public List<CategoryDto> viewParentCategory(@PathVariable(name = "categoryNo") Long categoryNo){

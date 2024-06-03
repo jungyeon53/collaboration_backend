@@ -52,6 +52,10 @@ dependencies {
     // Log4j
     implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
 
+    // 바인딩
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
+    implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.1'
+    implementation 'javax.activation:activation:1.1.1'
 
     // FOR @ConfigurationProperties
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"

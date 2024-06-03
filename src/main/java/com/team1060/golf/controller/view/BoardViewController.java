@@ -1,9 +1,16 @@
 package com.team1060.golf.controller.view;
 
+import com.team1060.golf.entity.Board;
+import com.team1060.golf.entity.Member;
+import com.team1060.golf.repository.BoardRepository;
+import com.team1060.golf.repository.MemberRepository;
 import com.team1060.golf.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -12,17 +19,10 @@ public class BoardViewController {
 
     private final BoardService boardService;
 
-//    @GetMapping("all")
-//    public List<BoardDto> allList() {
-//        List<Board> allList = boardService.allList();
-//        return allList.stream().map(this::convertToDto).collect(Collectors.toList());
-//    }
-//
-//    private BoardDto convertToDto(Board board) {
-//        BoardDto boardDto = new BoardDto();
-//        boardDto.setBoardNo(board.getBoardNo());
-//        boardDto.setTitle(board.getTitle());
-//        boardDto.setContent(board.getContent());
-//        return boardDto;
-//    }
+    private final MemberRepository memberRepository;
+    private final BoardRepository boardRepository;
+
+
+
+
 }
