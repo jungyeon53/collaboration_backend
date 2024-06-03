@@ -39,8 +39,8 @@ public class BoardService {
      * @param board
      */
     public void registerNotice(RegisterBoard board){
-       Category category = entityFetcher.getCategory(board.getCategoryNo());
-       Member member = entityFetcher.getMember(board.getMemberNo());
+       Category category = entityFetcher.selectCategory(board.getCategoryNo());
+       Member member = entityFetcher.selectMember(board.getMemberNo());
        Board registerBoard = boardRepository.save(board.registerBoard(category, member));
 
        // 해시태그 (게시글의 키워드 추가예정 )
@@ -55,8 +55,8 @@ public class BoardService {
      */
     public void rsgisterQnA(RegisterQnA qna, MultipartFile[] files) throws IOException {
         Category category =
-                entityFetcher.getCategory(qna.getCategoryNo());
-        Member member = entityFetcher.getMember(qna.getMemberNo());
+                entityFetcher.selectCategory(qna.getCategoryNo());
+        Member member = entityFetcher.selectMember(qna.getMemberNo());
         // 게시글
         Board registerBoard = boardRepository.save(qna.registerQnA(category, member));
         List<BoardAttach> list = new ArrayList<>();
@@ -104,7 +104,7 @@ public class BoardService {
      * @return
      */
     public List<BoardDto> viewCategoryBoard(Long categoryNo) {
-        Category category = entityFetcher.getCategory(categoryNo);
+        Category category = entityFetcher.selectCategory(categoryNo);
         List<Board> boards = boardRepository.findByCategory(category);
         return boards.stream()
                 .map(boardMapper::boardToBoardDTO)

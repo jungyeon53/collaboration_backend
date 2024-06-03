@@ -45,7 +45,7 @@ public class CategoryService {
      * @return
      */
     public CategoryDto viewCategory(Long categoryNo){
-        Category category = entityFetcher.getCategory(categoryNo);
+        Category category = entityFetcher.selectCategory(categoryNo);
         return categoryMappper.categoryToCategoryDTO(category);
     }
 

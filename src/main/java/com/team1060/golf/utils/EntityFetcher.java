@@ -14,14 +14,36 @@ public class EntityFetcher {
     private final MemberRepository memberRepository;
     private final CategoryRepository categoryRepository;
 
-    public Category getCategory(Long categoryNo) {
+
+    /**
+     * 카테고리 번호로 조회
+     * @param categoryNo
+     * @return
+     */
+    public Category selectCategory(Long categoryNo) {
         Category category = categoryRepository.findById(categoryNo)
                 .orElseThrow(() -> new RuntimeException("해당 카테고리를 찾을 수 없습니다."));
         return category;
     }
 
-    public Member getMember(Long memberNo) {
+    /**
+     * memberNo 로 조회
+     * @param memberNo
+     * @return
+     */
+    public Member selectMember(Long memberNo) {
         Member member = memberRepository.findById(memberNo)
+                .orElseThrow(() -> new RuntimeException("해당 멤버를 찾을 수 없습니다."));
+        return member;
+    }
+
+    /**
+     * email로 조회
+     * @param email
+     * @return
+     */
+    public Member selectMember(String email) {
+        Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("해당 멤버를 찾을 수 없습니다."));
         return member;
     }

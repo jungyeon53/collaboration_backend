@@ -9,6 +9,7 @@ import com.team1060.golf.entity.Member;
 import com.team1060.golf.exception.DuplicateEmailException;
 import com.team1060.golf.exception.DuplicateNickNameException;
 import com.team1060.golf.repository.MemberRepository;
+import com.team1060.golf.utils.EntityFetcher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,6 +27,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final EntityFetcher entityFetcher;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
 
@@ -67,7 +69,7 @@ public class MemberService {
      * @param loginMember
      */
     public LoginDto loginMember(LoginMember loginMember) {
-        Member member = memberRepository.findByEmail(loginMember.getEmail()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이메일입니다."));
+        Member member = entityFetcher.selectMember(loginMember.getEmail());
         boolean isPassword = passwordEncoder.matches(loginMember.getPassword(), member.getPassword());
         if (!isPassword) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
@@ -111,7 +113,7 @@ public class MemberService {
      * @return
      */
     public LoginDto reissuanceToken(ReissuanceToken token){
-        Member member = memberRepository.findByEmail(token.getEmail()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이메일입니다."));
+        Member member = entityFetcher.selectMember(token.getEmail());
         String preRefreshToken = member.getRefreshToken();
         boolean isRefreshTokenEquals = preRefreshToken.equals(token.getRefreshToken());
         if(!isRefreshTokenEquals){
@@ -125,7 +127,7 @@ public class MemberService {
      * @param email
      */
     public void logout(String email) {
-        Member member = memberRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이메일입니다."));
+        Member member = entityFetcher.selectMember(email);
         member.setRefreshToken(null);
         memberRepository.save(member);
     }
