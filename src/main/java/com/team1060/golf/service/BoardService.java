@@ -2,10 +2,12 @@ package com.team1060.golf.service;
 
 import com.team1060.golf.dao.RegisterBoard;
 import com.team1060.golf.dao.RegisterQnA;
+import com.team1060.golf.dto.BoardDto;
 import com.team1060.golf.entity.Board;
 import com.team1060.golf.entity.BoardAttach;
 import com.team1060.golf.entity.Category;
 import com.team1060.golf.entity.Member;
+import com.team1060.golf.mapMapper.BoardMapper;
 import com.team1060.golf.repository.BoardAttachRepository;
 import com.team1060.golf.repository.BoardRepository;
 import com.team1060.golf.utils.EntityFetcher;
@@ -19,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +31,7 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final BoardAttachRepository boardAttachRepository;
+    private final BoardMapper boardMapper;
     private final EntityFetcher entityFetcher;
 
     /**
@@ -83,4 +87,27 @@ public class BoardService {
         return filePath.toString();
     }
 
+    /**
+     * 모든 게시글 조회
+     * @return
+     */
+    public List<BoardDto> viewAllBoard() {
+        List<Board> boards = boardRepository.findAll();
+        return boards.stream()
+                .map(boardMapper::boardToBoardDTO)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 카테고리별 게시글 조회
+     * @param categoryNo
+     * @return
+     */
+    public List<BoardDto> viewCategoryBoard(Long categoryNo) {
+        Category category = entityFetcher.getCategory(categoryNo);
+        List<Board> boards = boardRepository.findByCategory(category);
+        return boards.stream()
+                .map(boardMapper::boardToBoardDTO)
+                .collect(Collectors.toList());
+    }
 }

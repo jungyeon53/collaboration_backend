@@ -13,8 +13,6 @@ import java.time.ZonedDateTime;
 public class BoardDto {
     private Long boardNo;
     private Category category;
-
-//    private Member member; 현재는 멤버 정보 필요 없음
     private String title;
     private String content;
     private ZonedDateTime regdate;
