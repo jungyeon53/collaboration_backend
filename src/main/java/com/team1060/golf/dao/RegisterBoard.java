@@ -19,15 +19,15 @@ public class RegisterBoard {
     private Long memberNo;
     private String title;
     private String content;
-    private Keyword keyword;
+    private String keyword;
 
-    public Board registerBoard(Category category, Member member){
+    public Board registerBoard(Category category, Member member, Keyword keyword){
         return Board.builder()
                 .category(category)
                 .member(member)
                 .title(this.title)
                 .content(this.content)
-                .keyword(this.keyword)
+                .keyword(keyword)
                 .regdate(ZonedDateTime.now())
                 .build();
     }

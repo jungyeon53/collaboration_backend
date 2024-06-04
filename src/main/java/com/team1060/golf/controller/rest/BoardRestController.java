@@ -37,7 +37,7 @@ public class BoardRestController {
      * @throws IOException
      */
     @PostMapping("QnaInsert")
-    public ResponseEntity<String> registerQnA(RegisterQnA qnA, @RequestPart(value = "files", required = false) MultipartFile[] files) throws IOException {
+    public ResponseEntity<String> registerQnA(@RequestPart(value = "qna") RegisterQnA qnA, @RequestPart(value = "files", required = false) MultipartFile[] files) throws IOException {
         boardService.rsgisterQnA(qnA, files);
         return ResponseEntity.ok("1:1 문의 등록 완료");
     }

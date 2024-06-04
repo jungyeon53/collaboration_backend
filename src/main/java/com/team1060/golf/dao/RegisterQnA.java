@@ -4,6 +4,7 @@ import com.team1060.golf.entity.Board;
 import com.team1060.golf.entity.BoardAttach;
 import com.team1060.golf.entity.Category;
 import com.team1060.golf.entity.Member;
+import com.team1060.golf.enums.Keyword;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,19 +22,21 @@ public class RegisterQnA {
     private Long memberNo;
     private String title;
     private String content;
+    private String keyword;
 
     // 첨부파일
     private Long boardNo;
     private String path;
     private String name;
 
-    public Board registerQnA(Category category, Member member){
+    public Board registerQnA(Category category, Member member, Keyword keyword){
         return Board.builder()
                 .category(category)
                 .member(member)
                 .title(this.title)
                 .content(this.content)
                 .regdate(ZonedDateTime.now())
+                .keyword(keyword)
                 .build();
     }
 

@@ -7,6 +7,7 @@ import com.team1060.golf.entity.Board;
 import com.team1060.golf.entity.BoardAttach;
 import com.team1060.golf.entity.Category;
 import com.team1060.golf.entity.Member;
+import com.team1060.golf.enums.Keyword;
 import com.team1060.golf.mapMapper.BoardMapper;
 import com.team1060.golf.repository.BoardAttachRepository;
 import com.team1060.golf.repository.BoardRepository;
@@ -41,9 +42,9 @@ public class BoardService {
     public void registerNotice(RegisterBoard board){
        Category category = entityFetcher.selectCategory(board.getCategoryNo());
        Member member = entityFetcher.selectMember(board.getMemberNo());
-       Board registerBoard = boardRepository.save(board.registerBoard(category, member));
+        Keyword keyword = Keyword.valueOf(board.getKeyword());
+       Board registerBoard = boardRepository.save(board.registerBoard(category, member, keyword));
 
-       // 해시태그 (게시글의 키워드 추가예정 )
        boardRepository.save(registerBoard);
     }
 
@@ -57,8 +58,9 @@ public class BoardService {
         Category category =
                 entityFetcher.selectCategory(qna.getCategoryNo());
         Member member = entityFetcher.selectMember(qna.getMemberNo());
+        Keyword keyword = Keyword.valueOf(qna.getKeyword());
         // 게시글
-        Board registerBoard = boardRepository.save(qna.registerQnA(category, member));
+        Board registerBoard = boardRepository.save(qna.registerQnA(category, member, keyword));
         List<BoardAttach> list = new ArrayList<>();
         for(MultipartFile file : files){
         String name = file.getOriginalFilename();
@@ -106,6 +108,20 @@ public class BoardService {
     public List<BoardDto> viewCategoryBoard(Long categoryNo) {
         Category category = entityFetcher.selectCategory(categoryNo);
         List<Board> boards = boardRepository.findByCategory(category);
+        return boards.stream()
+                .map(boardMapper::boardToBoardDTO)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 멤버별 1대1 문의 리스트
+     * @param memberNo
+     * @return
+     */
+    public List<BoardDto> viewQnABoard(Long memberNo) {
+        Category category = entityFetcher.selectCategory(3L);
+        Member member = entityFetcher.selectMember(memberNo);
+        List<Board> boards = boardRepository.findByCategoryAndMember(category, member);
         return boards.stream()
                 .map(boardMapper::boardToBoardDTO)
                 .collect(Collectors.toList());
