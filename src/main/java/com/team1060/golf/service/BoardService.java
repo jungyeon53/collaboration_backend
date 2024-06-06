@@ -126,4 +126,14 @@ public class BoardService {
                 .map(boardMapper::boardToBoardDTO)
                 .collect(Collectors.toList());
     }
+
+    /**
+     * 게시글 상세보기
+     * @param boardNo
+     * @return
+     */
+    public BoardDto viewBoard(Long boardNo) {
+        Board board = entityFetcher.selectBoard(boardNo);
+        return boardMapper.boardToBoardDTO(board);
+    }
 }

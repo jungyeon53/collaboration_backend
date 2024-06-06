@@ -52,4 +52,14 @@ public class BoardViewController {
     public List<BoardDto> viewQnABoard(@PathVariable(name = "memberNo") Long memberNo){
         return boardService.viewQnABoard(memberNo);
     }
+
+    /**
+     * 게시글 상세보기
+     * @param boardNo
+     * @return
+     */
+    @GetMapping("list/{boardNo}")
+    public BoardDto viewBoard(@PathVariable(name = "boardNo") Long boardNo){
+        return boardService.viewBoard(boardNo);
+    }
 }
