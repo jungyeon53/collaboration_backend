@@ -22,21 +22,19 @@ public class RegisterQnA {
     private Long memberNo;
     private String title;
     private String content;
-    private String keyword;
 
     // 첨부파일
     private Long boardNo;
     private String path;
     private String name;
 
-    public Board registerQnA(Category category, Member member, Keyword keyword){
+    public Board registerQnA(Category category, Member member){
         return Board.builder()
                 .category(category)
                 .member(member)
                 .title(this.title)
                 .content(this.content)
                 .regdate(ZonedDateTime.now())
-                .keyword(keyword)
                 .build();
     }
 

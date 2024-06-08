@@ -31,6 +31,7 @@ public class TokenProvider {
                 .setExpiration(expiration) // 만료시간
                 .setSubject(member.getEmail())
                 .claim("email", member.getEmail())
+                .claim("memberNo", member.getUserNo())
                 .claim("nickname", member.getNickname())
                 .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecretKey())
                 .compact();

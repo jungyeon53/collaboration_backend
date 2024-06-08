@@ -58,9 +58,8 @@ public class BoardService {
         Category category =
                 entityFetcher.selectCategory(qna.getCategoryNo());
         Member member = entityFetcher.selectMember(qna.getMemberNo());
-        Keyword keyword = Keyword.valueOf(qna.getKeyword());
         // 게시글
-        Board registerBoard = boardRepository.save(qna.registerQnA(category, member, keyword));
+        Board registerBoard = boardRepository.save(qna.registerQnA(category, member));
         List<BoardAttach> list = new ArrayList<>();
         for(MultipartFile file : files){
         String name = file.getOriginalFilename();
