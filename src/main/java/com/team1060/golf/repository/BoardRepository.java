@@ -14,5 +14,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     List<Board> findByCategory(Category category);
 
     List<Board> findByCategoryAndMember(Category category, Member member);
+
+    List<Board> findByCategoryAndTitleContainingOrContentContaining(Category category, String title, String content);
 }
 

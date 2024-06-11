@@ -135,4 +135,20 @@ public class BoardService {
         Board board = entityFetcher.selectBoard(boardNo);
         return boardMapper.boardToBoardDTO(board);
     }
+
+    /**
+     * 게시글 검색
+     * @param categoryNo
+     * @param title
+     * @return
+     */
+    public List<BoardDto> searchBoardList(Long categoryNo, String title){
+
+        Category category = entityFetcher.selectCategory(categoryNo);
+
+        List<Board> boards = boardRepository.findByCategoryAndTitleContainingOrContentContaining(category, title, title);
+        return boards.stream()
+                .map(boardMapper::boardToBoardDTO)
+                .collect(Collectors.toList());
+    }
 }
