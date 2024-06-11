@@ -137,16 +137,30 @@ public class BoardService {
     }
 
     /**
-     * 게시글 검색
+     * 게시글 검색 (공지사항, 자주찾는질문 각각 )
      * @param categoryNo
      * @param title
      * @return
      */
     public List<BoardDto> searchBoardList(Long categoryNo, String title){
-
         Category category = entityFetcher.selectCategory(categoryNo);
-
         List<Board> boards = boardRepository.findByCategoryAndTitleContainingOrContentContaining(category, title, title);
+        return boards.stream()
+                .map(boardMapper::boardToBoardDTO)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 게시글 전체 검색(공지사항, 자주찾는 질문 포함)
+     * @param keyword
+     * @return
+     */
+    public List<BoardDto> searchMainBoardList(String keyword) {
+        List<Category> findCate = List.of(
+                entityFetcher.selectCategory(1L),
+                entityFetcher.selectCategory(2L)
+        );
+        List<Board> boards = boardRepository.findByCategoryInAndTitleContainingOrContentContaining(findCate, keyword, keyword);
         return boards.stream()
                 .map(boardMapper::boardToBoardDTO)
                 .collect(Collectors.toList());

@@ -4,7 +4,6 @@ import com.team1060.golf.dao.RegisterBoard;
 import com.team1060.golf.dao.RegisterQnA;
 import com.team1060.golf.dao.SearchBoard;
 import com.team1060.golf.dto.BoardDto;
-import com.team1060.golf.entity.Board;
 import com.team1060.golf.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -46,12 +45,22 @@ public class BoardRestController {
     }
 
     /**
-     * 게시글 검색
+     * 공지사항, 자주찾는 질문 게시글 검색
      * @param searchBoard
      * @return
      */
     @PostMapping("search")
     public List<BoardDto> searchBoard(@RequestBody SearchBoard searchBoard){
         return boardService.searchBoardList(searchBoard.getCategoryNo(), searchBoard.getTitle());
+    }
+
+    /**
+     * 게시판 메인화면 검색창 (공지사항, 자주찾는 질문 검색)
+     * @param keyword
+     * @return
+     */
+    @PostMapping("mainSearch")
+    public List<BoardDto> searchMainsearch(@RequestParam String keyword){
+        return boardService.searchMainBoardList(keyword);
     }
 }
